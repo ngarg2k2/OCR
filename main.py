@@ -8,19 +8,20 @@ from tensorflow.keras.models import load_model
 from PIL import Image, ImageOps
 import matplotlib.pyplot as plt
 import ckwrap
- 
-app = Flask(__name__)
- 
-UPLOAD_FOLDER = 'static/uploads/'
- 
-app.secret_key = "secret key"
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
- 
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
- 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def create_app():
+    app = Flask(__name__)
+    
+    UPLOAD_FOLDER = 'static/uploads/'
+    
+    app.secret_key = "secret key"
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+    
+    ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+    
+    def allowed_file(filename):
+        return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
      
  
 @app.route('/')
