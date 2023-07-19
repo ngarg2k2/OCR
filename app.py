@@ -9,19 +9,19 @@ from PIL import Image, ImageOps
 import matplotlib.pyplot as plt
 import ckwrap
 
-def create_app():
-    app = Flask(__name__)
+# def create_app():
+app = Flask(__name__)
     
-    UPLOAD_FOLDER = 'static/uploads/'
+UPLOAD_FOLDER = 'static/uploads/'
     
-    app.secret_key = "secret key"
-    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.secret_key = "secret key"
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
     
-    ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
     
-    def allowed_file(filename):
-        return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
      
  
 @app.route('/')
@@ -44,9 +44,9 @@ def upload_image():
         flash('Image successfully uploaded and displayed below')
         path = 'static/uploads/'
         text = ocr(path+filename)
-        print(text)
-        # return render_template('index.html', filename=filename)
-        return render_template('text.html', content=text)
+        # print(text)
+        return render_template('index.html', filename=filename,content=text)
+        # return render_template('text.html', content=text)
     else:
         flash('Allowed image types are - png, jpg, jpeg, gif')
         return redirect(request.url)
